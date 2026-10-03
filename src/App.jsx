@@ -1,4 +1,19 @@
-import { useState } from 'react'
+function App() {
+  const quote = { text: "Veni, Vedi, Vici", author: "Fake Author"};
+
+  return (
+    <div className="app">
+      <h1>Quoteboard</h1>
+      <button>New Quote</button>
+      <p>"{quote.text}"</p>
+      <p>- {quote.author}</p>
+    </div>
+  );
+}
+
+export default App;
+
+{/*import { useState } from 'react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -119,4 +134,4 @@ function App() {
   )
 }
 
-export default App
+export default App*/}
