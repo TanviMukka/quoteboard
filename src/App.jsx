@@ -17,7 +17,7 @@ function App() {
   return (
     <div main="app">
       <h1>Quoteboard</h1>
-      <button>New Quote</button>
+      <button onClick={fetchQuote}>New Quote</button>
       <p>"{quote.text}"</p>
       <p>- {quote.author}</p>
     </div>
