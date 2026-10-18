@@ -4,7 +4,10 @@ function App() {
   const [quote, setQuote] = useState({ text: "Loading...", author: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("")
-  const [favQuotes, setFavQuotes] = useState([]);
+  const [favQuotes, setFavQuotes] = useState(() => {
+    const saved = localStorage.getItem("favQuotes");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   async function fetchQuote() {
     setLoading(true);
@@ -25,12 +28,20 @@ function App() {
   }
 
   function saveQuote() {
+    const alreadySaved = favQuotes.some((f) => f.text === quote.text);
+    if (alreadySaved) {
+      return;
+    }
     setFavQuotes([...favQuotes, quote]);
   }
 
   useEffect(() => {
     fetchQuote();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favQuotes", JSON.stringify(favQuotes));
+  }, [favQuotes]);
 
   return (
     <div className="app">
@@ -46,7 +57,7 @@ function App() {
         <p>...</p>
       ) : (
         <div>
-          <p>"{quote.text}"</p>
+          <p className="quote-text">"{quote.text}"</p>
           <p>- {quote.author}</p>
         </div>
       )}
@@ -54,11 +65,15 @@ function App() {
       {error && <p>{error}</p>}
 
       <h3>Favorite Quotes</h3>
-      <ul>
+      {favQuotes.length == 0 ? (
+        <p>No favorite quotes yet</p>
+      ) : (
+        <ul>
         {favQuotes.map((fav, index) => (
           <li key={index}>"{fav.text}" - {fav.author}</li>
         ))}
-      </ul>
+        </ul>
+      )}
       </div>
   )
 }
