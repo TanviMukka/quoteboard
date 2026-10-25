@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import './App.css';
 
 function App() {
   const [quote, setQuote] = useState({ text: "Loading...", author: "" });
@@ -21,7 +22,7 @@ function App() {
       setQuote({ text: data.quote, author: data.author });
     } catch (error) {
       console.error(error);
-      setError("Something went wrong.")
+      setError("Something went wrong")
     } finally {
       setLoading(false);
     }
@@ -51,22 +52,22 @@ function App() {
     <div className="app">
       <h1>Quoteboard</h1>
       <div id="new-quote-button">
-        <button onClick={fetchQuote}>New Quote</button>
+        <button onClick={fetchQuote} disabled={loading}>New Quote</button>
       </div>
       <div id="save-quote-button">
-        <button onClick={saveQuote} disabled={loading}>Save Favorite Quote</button>
+        <button onClick={saveQuote} disabled={loading || error !== ""}>Save Quote</button>
       </div>
 
       {loading ? (
         <p>...</p>
+      ) : error ? (
+        <p>{error}</p>
       ) : (
         <div>
           <p className="quote-text">"{quote.text}"</p>
           <p>- {quote.author}</p>
         </div>
       )}
-
-      {error && <p>{error}</p>}
 
       <h3>Favorite Quotes</h3>
       {favQuotes.length == 0 ? (
@@ -76,7 +77,7 @@ function App() {
         {favQuotes.map((fav) => (
           <li key={fav.text}>
             "{fav.text}" - {fav.author}
-            <button onClick={() => removeQuote(fav)}>Remove</button>
+            <button onClick={() => removeQuote(fav)} disabled={loading}>Remove Quote</button>
           </li>
         ))}
       </ul>
