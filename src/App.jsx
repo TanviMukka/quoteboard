@@ -35,6 +35,10 @@ function App() {
     setFavQuotes([...favQuotes, quote]);
   }
 
+  function removeQuote(quoteToRemove) {
+    setFavQuotes(favQuotes.filter((f) => f.text !== quoteToRemove.text));
+  }
+
   useEffect(() => {
     fetchQuote();
   }, []);
@@ -68,11 +72,14 @@ function App() {
       {favQuotes.length == 0 ? (
         <p>No favorite quotes yet</p>
       ) : (
-        <ul>
-        {favQuotes.map((fav, index) => (
-          <li key={index}>"{fav.text}" - {fav.author}</li>
+      <ul>
+        {favQuotes.map((fav) => (
+          <li key={fav.text}>
+            "{fav.text}" - {fav.author}
+            <button onClick={() => removeQuote(fav)}>Remove</button>
+          </li>
         ))}
-        </ul>
+      </ul>
       )}
       </div>
   )
