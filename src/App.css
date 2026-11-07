@@ -145,6 +145,8 @@ button:focus-visible {
 .stage {
   position: relative;
   z-index: 4;
+  /* Everything inside (machine, desk, trash) is sized in em, so it all scales together */
+  font-size: clamp(9px, 1.34vw, 16px);
   min-height: 100svh;
   display: flex;
   justify-content: space-between;
@@ -166,102 +168,122 @@ button:focus-visible {
   position: relative;
   align-self: flex-start;
   margin-top: 14vh;
-  width: min(340px, 88vw);
+  width: min(21.25em, 88vw);
   flex: none;
 }
 
-/* Power cable running up to the ceiling */
+/* Power cable: comes down from the ceiling and passes BEHIND the machine,
+   so the machine hangs over it (z-index 1 is below the machine body's 2) */
 .machine::before {
   content: "";
   position: absolute;
-  bottom: 100%;
+  z-index: 1;
   left: 50%;
-  width: 10px;
-  height: 100vh;
-  margin-left: -5px;
-  background: #23221c;
-  border-radius: 5px;
+  top: -100vh;
+  height: calc(100vh + 3.5em);
+  width: 0.625em;
+  margin-left: -0.3125em;
+  background: linear-gradient(90deg, #15140f, #46443a 50%, #15140f);
+  border-radius: 0.3em;
+}
+
+/* Metal clamp where the cable goes into the top of the machine */
+.machine::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: -0.7em;
+  width: 3em;
+  height: 1.3em;
+  margin-left: -1.5em;
+  background:
+    radial-gradient(circle at 18% 55%, #2a2922 0 0.14em, transparent 0.16em),
+    radial-gradient(circle at 82% 55%, #2a2922 0 0.14em, transparent 0.16em),
+    linear-gradient(180deg, #b9b49f, #8a8672);
+  border: 0.19em solid var(--outline);
+  border-radius: 0.5em 0.5em 0.15em 0.15em;
 }
 
 .machine-body {
   position: relative;
   z-index: 2;
   background: linear-gradient(180deg, #d9d4c1, #bdb8a4);
-  border: 4px solid var(--outline);
-  border-radius: 18px 18px 8px 8px;
-  padding: 18px 18px 36px;
-  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.25), inset 0 3px 0 rgba(255, 255, 255, 0.5);
+  border: 0.25em solid var(--outline);
+  border-radius: 1.125em 1.125em 0.5em 0.5em;
+  padding: 1.125em 1.125em 2.25em;
+  box-shadow: 0 0.625em 0 rgba(0, 0, 0, 0.25), inset 0 0.1875em 0 rgba(255, 255, 255, 0.5);
 }
 
 .plate {
-  margin: 0 0 12px;
-  font-size: 1.2rem;
+  margin: 0 0 0.625em;
+  font-size: 1.2em;
   letter-spacing: 0.25em;
   text-align: center;
   background: #3a382e;
   color: #e7dfa8;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 0.4167em;
+  border-radius: 0.3125em;
 }
 
 .lcd {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 0.625em;
   min-height: 2.8em;
-  padding: 10px 12px;
+  padding: 0.625em 0.75em;
   background: #1d2a1b;
   color: #8dff9a;
-  font-size: 1rem;
+  font-size: 1em;
   letter-spacing: 0.12em;
-  text-shadow: 0 0 6px rgba(141, 255, 154, 0.7);
-  border: 3px inset #6d6a5a;
-  border-radius: 6px;
+  text-shadow: 0 0 0.375em rgba(141, 255, 154, 0.7);
+  border: 0.1875em inset #6d6a5a;
+  border-radius: 0.375em;
 }
 
 .led {
   flex: none;
-  width: 12px;
-  height: 12px;
+  width: 0.75em;
+  height: 0.75em;
   border-radius: 50%;
   background: #4dff6a;
-  box-shadow: 0 0 8px #4dff6a;
+  box-shadow: 0 0 0.5em #4dff6a;
 }
 .led.err {
   background: #ff4d3d;
-  box-shadow: 0 0 8px #ff4d3d;
+  box-shadow: 0 0 0.5em #ff4d3d;
   animation: blink 1s steps(1) infinite;
 }
 
 .controls {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 14px;
+  gap: 0.875em;
   align-items: center;
-  margin: 16px 0;
+  margin: 1em 0;
 }
 
 .btn-print {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 0.0962em;
   width: 100%;
-  padding: 14px 10px;
-  font-size: 1.3rem;
+  padding: 0.6731em 0.4808em;
+  font-size: 1.3em;
   font-weight: bold;
   letter-spacing: 0.15em;
   color: #fff;
   background: #c8402f;
-  border: 4px solid #7d241a;
-  border-radius: 12px;
-  box-shadow: 0 6px 0 #7d241a;
+  border: 0.1923em solid #7d241a;
+  border-radius: 0.5769em;
+  box-shadow: 0 0.2885em 0 #7d241a;
   cursor: pointer;
   transition: transform 0.08s, box-shadow 0.08s;
 }
 .btn-print small {
-  font-size: 0.7rem;
+  font-size: 0.5385em;
   letter-spacing: 0.08em;
   font-weight: normal;
 }
@@ -269,8 +291,8 @@ button:focus-visible {
   background: #d94a38;
 }
 .btn-print:active:not(:disabled) {
-  transform: translateY(5px);
-  box-shadow: 0 1px 0 #7d241a;
+  transform: translateY(0.3125em);
+  box-shadow: 0 0.0625em 0 #7d241a;
 }
 .btn-print:disabled {
   opacity: 0.55;
@@ -281,56 +303,56 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.5em;
 }
 .decor-btn {
   display: block;
-  width: 50px;
-  padding: 4px 0;
+  width: 4.8077em;
+  padding: 0.3846em 0;
   text-align: center;
-  font-size: 0.65rem;
+  font-size: 0.65em;
   font-weight: bold;
   color: var(--ink);
   background: #e3dfcf;
-  border: 2px solid var(--outline);
-  border-radius: 6px;
-  box-shadow: 0 3px 0 var(--outline);
+  border: 0.1923em solid var(--outline);
+  border-radius: 0.5769em;
+  box-shadow: 0 0.2885em 0 var(--outline);
 }
 .knob {
-  width: 26px;
-  height: 26px;
+  width: 1.625em;
+  height: 1.625em;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #8a8672, #3a382e);
-  border: 2px solid var(--outline);
+  border: 0.125em solid var(--outline);
 }
 .knob::after {
   content: "";
   display: block;
-  width: 3px;
-  height: 10px;
-  margin: 2px auto 0;
+  width: 0.1875em;
+  height: 0.625em;
+  margin: 0.125em auto 0;
   background: #e7dfa8;
-  border-radius: 2px;
+  border-radius: 0.125em;
 }
 
 /* Where the paper comes out */
 .slot {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 14px;
-  height: 14px;
+  left: 1em;
+  right: 1em;
+  bottom: 0.875em;
+  height: 0.875em;
   background: #1c1b16;
-  border: 3px solid var(--outline);
-  border-radius: 8px;
+  border: 0.1875em solid var(--outline);
+  border-radius: 0.5em;
 }
 
 /* Box the strip slides inside. Clipping makes it look like it comes out of the slot. */
 .slot-clip {
   position: relative;
   z-index: 3;
-  width: min(230px, 86%);
-  margin: -28px auto 0;
+  width: min(14.375em, 86%);
+  margin: -1.75em auto 0;
   overflow: hidden;
 }
 
@@ -339,10 +361,10 @@ button:focus-visible {
    ============================================================ */
 .strip {
   position: relative;
-  padding: 20px 18px 34px;
+  padding: 1.25em 1.125em 2.125em;
   text-align: center;
   background-color: var(--paper);
-  background-image: repeating-linear-gradient(0deg, transparent 0 21px, rgba(0, 0, 0, 0.04) 21px 22px);
+  background-image: repeating-linear-gradient(0deg, transparent 0 1.3125em, rgba(0, 0, 0, 0.04) 1.3125em 1.375em);
   clip-path: var(--zig);
   animation: print-out 1.2s steps(16, end) both;
 }
@@ -358,20 +380,20 @@ button:focus-visible {
 }
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-6px); }
-  75% { transform: translateX(6px); }
+  25% { transform: translateX(-0.375em); }
+  75% { transform: translateX(0.375em); }
 }
 
 .quote-text {
-  margin: 0 0 12px;
-  font-size: 1rem;
+  margin: 0 0 0.75em;
+  font-size: 1em;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
 .author {
-  margin: 0 0 16px;
-  font-size: 0.9rem;
+  margin: 0 0 1.1111em;
+  font-size: 0.9em;
   font-weight: bold;
   overflow-wrap: anywhere;
 }
@@ -379,9 +401,9 @@ button:focus-visible {
 /* Blinking typewriter cursor after the author's name */
 .cursor {
   display: inline-block;
-  width: 8px;
+  width: 0.5em;
   height: 1em;
-  margin-left: 4px;
+  margin-left: 0.25em;
   vertical-align: text-bottom;
   background: var(--ink);
   animation: blink 1s steps(1) infinite;
@@ -391,14 +413,14 @@ button:focus-visible {
 }
 
 .stamp {
-  padding: 8px 12px;
-  font-size: 0.85rem;
+  padding: 0.5882em 0.8824em;
+  font-size: 0.85em;
   font-weight: bold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
   background: transparent;
-  border: 2px dashed var(--ink);
+  border: 0.1471em dashed var(--ink);
   cursor: pointer;
 }
 .stamp:hover:not(:disabled) {
@@ -412,10 +434,13 @@ button:focus-visible {
 
 /* ============================================================
    THE DESK (drawn at a slight angle, like the reference pictures)
+   Items are placed by hand: "left" = across, "bottom" = depth
+   (bigger bottom = farther back, smaller/negative = closer to you).
    ============================================================ */
 .desk {
   position: relative;
-  width: min(520px, 92vw);
+  flex: none;
+  width: 32.5em;
 }
 
 /* Soft shadow on the carpet under the desk */
@@ -424,8 +449,8 @@ button:focus-visible {
   position: absolute;
   left: -2%;
   right: -2%;
-  bottom: -10px;
-  height: 28px;
+  bottom: -0.6em;
+  height: 1.75em;
   z-index: -1;
   background: rgba(30, 25, 0, 0.35);
   border-radius: 50%;
@@ -436,22 +461,32 @@ button:focus-visible {
 .desk-items {
   position: relative;
   z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding: 0 24px;
-  margin-bottom: -34px;
+  height: 13em;
+  margin-bottom: -2.1em;
 }
 
-.lamp { width: 100px; }
-.mug { width: 62px; }
-.plant { width: 100px; }
+.item {
+  position: absolute;
+  display: block;
+}
+
+/* Back row */
+.lamp { left: 2.4em; bottom: 0.1em; width: 6.5em; }
+.pen-cup { left: 20.9em; bottom: 0.6em; width: 3.2em; }
+.plant { left: 23.8em; bottom: 0.5em; width: 6.5em; }
+/* Middle (the jar is below) */
+/* Front row, slightly crooked on purpose */
+.mug { left: 20.2em; bottom: -1.4em; width: 3.7em; }
+.notebooks { left: 1em; bottom: -2.5em; width: 8.8em; transform: rotate(-2deg); }
+.sticky { left: 27.2em; bottom: -1.9em; width: 3.2em; transform: rotate(7deg); }
+.pencil-case { left: 12.4em; bottom: -2.5em; width: 7.5em; transform: rotate(-5deg); }
+.loose-pen { left: 22.6em; bottom: -2.9em; width: 4.8em; transform: rotate(8deg); }
 
 /* Desk surface: a trapezoid, so the back edge looks farther away */
 .tabletop {
   position: relative;
   z-index: 1;
-  height: 84px;
+  height: 5.25em;
   background: linear-gradient(180deg, #b8905f, #a07c52);
   clip-path: polygon(7% 0, 93% 0, 100% 100%, 0 100%);
 }
@@ -460,27 +495,27 @@ button:focus-visible {
 .tabletop-edge {
   position: relative;
   z-index: 1;
-  height: 16px;
+  height: 1em;
   background: linear-gradient(180deg, var(--wood), var(--wood-dark));
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 0.25em 0.25em;
 }
 
 .legs {
   position: relative;
   display: flex;
   justify-content: space-between;
-  height: 130px;
-  padding: 0 22px;
+  height: 8em;
+  padding: 0 1.4em;
 }
 .legs span {
-  width: 16px;
+  width: 1em;
   background: linear-gradient(90deg, var(--wood), var(--wood-dark));
 }
 /* Back legs: thinner, darker, shorter (farther away) */
 .legs .back {
   position: absolute;
   top: 0;
-  width: 11px;
+  width: 0.7em;
   height: 84%;
   background: #5b432b;
 }
@@ -491,11 +526,13 @@ button:focus-visible {
    THE JAR
    ============================================================ */
 .jar {
-  position: relative;
-  flex: none;
-  width: 140px;
-  height: 200px;
+  position: absolute;
+  left: 11em;
+  bottom: 0.25em;
+  width: 8.75em;
+  height: 12.5em;
   padding: 0;
+  font-size: inherit;
   background: none;
   border: none;
   cursor: pointer;
@@ -505,10 +542,10 @@ button:focus-visible {
 .jar::after {
   content: "";
   position: absolute;
-  left: -4px;
-  right: -4px;
-  bottom: -8px;
-  height: 16px;
+  left: -0.25em;
+  right: -0.25em;
+  bottom: -0.5em;
+  height: 1em;
   z-index: -1;
   background: rgba(40, 30, 0, 0.35);
   border-radius: 50%;
@@ -517,22 +554,22 @@ button:focus-visible {
 
 .jar-lid {
   position: absolute;
-  top: -4px;
-  left: 16px;
-  right: 16px;
-  height: 18px;
+  top: -0.25em;
+  left: 1em;
+  right: 1em;
+  height: 1.125em;
   z-index: 2;
   background: #8f8a76;
-  border: 3px solid var(--outline);
-  border-radius: 6px 6px 2px 2px;
+  border: 0.1875em solid var(--outline);
+  border-radius: 0.375em 0.375em 0.125em 0.125em;
 }
 
 .jar-glass {
   position: absolute;
-  inset: 12px 0 0;
+  inset: 0.75em 0 0;
   overflow: hidden;
-  border: 4px solid rgba(255, 255, 255, 0.65);
-  border-radius: 20px 20px 30px 30px;
+  border: 0.25em solid rgba(255, 255, 255, 0.65);
+  border-radius: 1.25em 1.25em 1.875em 1.875em;
   background: linear-gradient(
     100deg,
     rgba(255, 255, 255, 0.35) 0 12%,
@@ -547,11 +584,11 @@ button:focus-visible {
   box-shadow: 0 0 0 3px rgba(255, 255, 200, 0.7), inset 0 0 14px rgba(255, 255, 255, 0.5);
 }
 
-/* Crumpled paper balls inside the jar: lumpy outline + folded facets + crease lines */
+/* Crumpled paper balls (in the jar AND in the trash): lumpy outline + folded facets + crease lines */
 .ball {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 2em;
+  height: 2em;
   transform: rotate(var(--rot, 0deg));
   filter: drop-shadow(0 2px 1px rgba(40, 30, 0, 0.35));
 }
@@ -572,17 +609,17 @@ button:focus-visible {
 .trash {
   position: relative;
   flex: none;
-  width: 84px;
-  height: 112px;
+  width: 6em;
+  height: 7.75em;
 }
 /* Dark opening you see when the lid lifts */
 .trash::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -4px;
-  right: -4px;
-  height: 18px;
+  left: -0.25em;
+  right: -0.25em;
+  height: 1.2em;
   z-index: 1;
   background: #26261f;
   border-radius: 50%;
@@ -591,10 +628,10 @@ button:focus-visible {
 .trash::after {
   content: "";
   position: absolute;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  height: 16px;
+  left: -0.5em;
+  right: -0.5em;
+  bottom: -0.5em;
+  height: 1em;
   z-index: -1;
   background: rgba(30, 25, 0, 0.35);
   border-radius: 50%;
@@ -603,27 +640,26 @@ button:focus-visible {
 .trash-lid {
   position: absolute;
   top: 0;
-  left: -4px;
-  right: -4px;
-  height: 18px;
+  left: -0.25em;
+  right: -0.25em;
+  height: 1.2em;
   z-index: 2;
-  background: radial-gradient(ellipse at 50% 40%, #a5a59c, #7d7d75);
-  border: 3px solid #55554e;
+  background: radial-gradient(ellipse at 50% 40%, #b3b3aa, #85857d);
+  border: 0.19em solid #55554e;
   border-radius: 50%;
   transform-origin: left bottom;
   transition: transform 0.25s;
 }
 .trash.open .trash-lid {
-  transform: rotate(-28deg) translate(-4px, -4px);
+  transform: rotate(-28deg) translate(-0.25em, -0.25em);
 }
 .trash-body {
   position: absolute;
-  inset: 9px 0 0;
-  background: repeating-linear-gradient(90deg, #a5a59c 0 10px, #8d8d85 10px 14px);
+  inset: 0.6em 0 0;
+  background: repeating-linear-gradient(90deg, #b3b3aa 0 0.625em, #94948c 0.625em 0.875em);
   clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
-  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 -0.4em 0 rgba(0, 0, 0, 0.2);
 }
-
 /* ============================================================
    JAR OVERLAY + ZOOM
    ============================================================ */
@@ -768,7 +804,8 @@ button:focus-visible {
 }
 
 /* ============================================================
-   FLYING PAPER BALL (strip crumples, then flies to the jar / trash)
+   FLYING PAPER BALL (strip crumples into a round ball, then flies to the jar / trash)
+   --sx / --sy squash the strip into a round ball of fixed size (set from App.jsx)
    ============================================================ */
 .flyer {
   position: fixed;
@@ -803,33 +840,35 @@ button:focus-visible {
   to { opacity: 0; }
 }
 @keyframes crumple-in {
-  0%, 10% { opacity: 0; }
-  30%, 100% { opacity: 1; }
+  0%, 8% { opacity: 0; }
+  28%, 100% { opacity: 1; }
 }
-/* Both clip-paths have 12 points so the browser can morph rectangle -> lumpy ball */
+/* Both clip-paths have 12 points so the browser can morph rectangle -> round lumpy ball.
+   Transform order is translate, rotate, scale so the ball stays a true circle while it spins. */
 @keyframes ball-fly {
   0% {
-    transform: translate(0, 0) scale(1) rotate(0);
+    transform: translate(0, 0) rotate(0) scale(1, 1);
     clip-path: polygon(0 0, 33% 0, 66% 0, 100% 0, 100% 33%, 100% 66%, 100% 100%, 66% 100%, 33% 100%, 0 100%, 0 66%, 0 33%);
     opacity: 1;
   }
-  30% {
-    transform: translate(0, -10px) scale(0.28) rotate(70deg);
-    clip-path: polygon(50% 0, 80% 8%, 98% 34%, 94% 68%, 74% 96%, 46% 100%, 20% 90%, 4% 64%, 2% 36%, 16% 14%, 34% 4%, 42% 2%);
+  28% {
+    transform: translate(0, -10px) rotate(70deg) scale(var(--sx), var(--sy));
+    clip-path: polygon(50% 0, 74% 8%, 92% 27%, 98% 50%, 92% 74%, 76% 92%, 50% 98%, 26% 92%, 8% 74%, 2% 50%, 8% 27%, 24% 8%);
     opacity: 1;
   }
   100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.12) rotate(540deg);
-    clip-path: polygon(50% 0, 80% 8%, 98% 34%, 94% 68%, 74% 96%, 46% 100%, 20% 90%, 4% 64%, 2% 36%, 16% 14%, 34% 4%, 42% 2%);
-    opacity: 0.4;
+    transform: translate(var(--dx), var(--dy)) rotate(540deg) scale(calc(var(--sx) * 0.55), calc(var(--sy) * 0.55));
+    clip-path: polygon(50% 0, 74% 8%, 92% 27%, 98% 50%, 92% 74%, 76% 92%, 50% 98%, 26% 92%, 8% 74%, 2% 50%, 8% 27%, 24% 8%);
+    opacity: var(--end-op, 1);
   }
 }
 
 /* ============================================================
-   PHONE LAYOUT: machine on top, desk + trash below
+   PHONE / NARROW LAYOUT: machine on top, desk + trash below
    ============================================================ */
-@media (max-width: 800px) {
+@media (max-width: 760px) {
   .stage {
+    font-size: 16px;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -845,19 +884,13 @@ button:focus-visible {
     flex-wrap: wrap;
     justify-content: center;
   }
+  /* Shrink the desk so it fits the screen width */
   .desk {
-    width: min(520px, 100%);
+    font-size: min(16px, calc((100vw - 24px) / 32.5));
   }
-  .legs {
-    height: 100px;
+  .trash {
+    order: 2;
   }
-}
-
-@media (max-width: 420px) {
-  .plant { display: none; }
-  .lamp { width: 70px; }
-  .mug { width: 52px; }
-  .desk-items { padding: 0 8px; }
 }
 
 /* Respect "reduce motion" settings (animations still finish, just instantly) */

@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
+// Size (in px) of the round paper ball when a strip is crumpled
+const BALL_SIZE = 56;
+
 function App() {
   // ---------- STATE ----------
   // The quote currently "printed" on the paper strip
@@ -72,6 +75,9 @@ function App() {
       top: from.top,
       width: from.width,
       height: from.height,
+      // how much to squash the strip so it becomes a round ball
+      sx: BALL_SIZE / from.width,
+      sy: BALL_SIZE / from.height,
       dx: to.left + to.width / 2 - (from.left + from.width / 2),
       dy: to.top + to.height * aim - (from.top + from.height / 2),
     });
@@ -237,7 +243,8 @@ function App() {
         <div className="right">
           <section className="desk">
             <div className="desk-items">
-              <svg className="lamp" viewBox="0 0 80 130" aria-hidden="true">
+              {/* BACK ROW */}
+              <svg className="item lamp" viewBox="0 0 80 130" aria-hidden="true">
                 <ellipse cx="44" cy="122" rx="34" ry="7" fill="rgba(40,30,0,0.3)" />
                 <ellipse cx="40" cy="114" rx="26" ry="6" fill="#5c5a4a" />
                 <rect x="37" y="52" width="6" height="62" fill="#6b6954" />
@@ -245,6 +252,28 @@ function App() {
                 <ellipse cx="40" cy="54" rx="28" ry="5" fill="#f3d27a" />
               </svg>
 
+              <svg className="item pen-cup" viewBox="0 0 50 82" aria-hidden="true">
+                <ellipse cx="26" cy="77" rx="17" ry="3.5" fill="rgba(40,30,0,0.3)" />
+                <ellipse cx="25" cy="46" rx="15" ry="4" fill="#2a3d55" />
+                <line x1="21" y1="46" x2="14" y2="8" stroke="#c0392b" strokeWidth="4" strokeLinecap="round" />
+                <line x1="26" y1="46" x2="28" y2="2" stroke="#2b2b2b" strokeWidth="4" strokeLinecap="round" />
+                <line x1="30" y1="46" x2="42" y2="12" stroke="#e0b020" strokeWidth="4" strokeLinecap="round" />
+                <path d="M10 46 Q25 52 40 46 L37 76 L13 76 Z" fill="#5b7fa6" />
+                <path d="M10 46 Q25 52 40 46" fill="none" stroke="#3d5a7a" strokeWidth="2" />
+              </svg>
+
+              <svg className="item plant" viewBox="0 0 70 104" aria-hidden="true">
+                <ellipse cx="35" cy="98" rx="28" ry="5" fill="rgba(40,30,0,0.3)" />
+                <path d="M20 70 h30 l-4 26 h-22 z" fill="#b5653a" />
+                <ellipse cx="35" cy="70" rx="15" ry="4" fill="#8f4a28" />
+                <ellipse cx="35" cy="70" rx="12" ry="3" fill="#3b2a1a" />
+                <path d="M35 70 C20 50 18 30 28 10 C34 30 38 45 35 70" fill="#5f8a3c" />
+                <path d="M35 70 C50 55 56 38 50 22 C42 38 38 52 35 70" fill="#6fa047" />
+                <path d="M35 70 C28 58 14 52 8 42 C20 44 30 54 35 70" fill="#4d7a30" />
+                <path d="M35 70 C42 58 56 56 64 46 C52 46 40 54 35 70" fill="#5a8a38" />
+              </svg>
+
+              {/* THE JAR (middle) */}
               <button
                 className="jar"
                 ref={jarRef}
@@ -260,29 +289,63 @@ function App() {
                       style={{
                         "--rot": `${(i * 53) % 360}deg`,
                         left: `${6 + (i % 4) * 21 + (Math.floor(i / 4) % 2) * 6}%`,
-                        bottom: `${4 + Math.floor(i / 4) * 15}px`,
+                        bottom: `${0.25 + Math.floor(i / 4) * 0.94}em`,
                       }}
                     />
                   ))}
                 </span>
               </button>
 
-              <svg className="mug" viewBox="0 0 60 62" aria-hidden="true">
+              {/* FRONT ROW (a bit crooked, like real stuff) */}
+              <svg className="item mug" viewBox="0 0 60 62" aria-hidden="true">
                 <ellipse cx="28" cy="53" rx="24" ry="5" fill="rgba(40,30,0,0.3)" />
                 <rect x="8" y="14" width="34" height="36" rx="4" fill="#e8e3d0" stroke="#6b6954" strokeWidth="3" />
                 <path d="M42 22 h6 a8 8 0 0 1 0 16 h-6" fill="none" stroke="#6b6954" strokeWidth="3" />
                 <ellipse cx="25" cy="14" rx="17" ry="4" fill="#6b4a2f" stroke="#6b6954" strokeWidth="2" />
               </svg>
 
-              <svg className="plant" viewBox="0 0 70 104" aria-hidden="true">
-                <ellipse cx="35" cy="98" rx="28" ry="5" fill="rgba(40,30,0,0.3)" />
-                <path d="M20 70 h30 l-4 26 h-22 z" fill="#b5653a" />
-                <ellipse cx="35" cy="70" rx="15" ry="4" fill="#8f4a28" />
-                <ellipse cx="35" cy="70" rx="12" ry="3" fill="#3b2a1a" />
-                <path d="M35 70 C20 50 18 30 28 10 C34 30 38 45 35 70" fill="#5f8a3c" />
-                <path d="M35 70 C50 55 56 38 50 22 C42 38 38 52 35 70" fill="#6fa047" />
-                <path d="M35 70 C28 58 14 52 8 42 C20 44 30 54 35 70" fill="#4d7a30" />
-                <path d="M35 70 C42 58 56 56 64 46 C52 46 40 54 35 70" fill="#5a8a38" />
+              <svg className="item notebooks" viewBox="0 0 140 62" aria-hidden="true">
+                <ellipse cx="72" cy="58" rx="62" ry="5" fill="rgba(40,30,0,0.3)" />
+                <g transform="rotate(-2 70 50)">
+                  <rect x="8" y="46" width="124" height="11" rx="2" fill="#2f4a6e" />
+                  <rect x="12" y="48" width="116" height="3" fill="#efe9d6" />
+                  <polygon points="8,46 20,38 140,38 132,46" fill="#4466a0" />
+                </g>
+                <g transform="rotate(3 70 38)">
+                  <rect x="16" y="34" width="108" height="10" rx="2" fill="#8a3b3b" />
+                  <rect x="20" y="36" width="100" height="3" fill="#efe9d6" />
+                  <polygon points="16,34 26,26 134,26 124,34" fill="#b04e4e" />
+                </g>
+                <g transform="rotate(-1 70 28)">
+                  <rect x="22" y="23" width="96" height="9" rx="2" fill="#3b6b4a" />
+                  <rect x="26" y="25" width="88" height="3" fill="#efe9d6" />
+                  <polygon points="22,23 31,16 126,16 118,23" fill="#58926b" />
+                  <rect x="98" y="16" width="4" height="16" fill="#1f2a22" opacity="0.55" />
+                </g>
+              </svg>
+
+              <svg className="item sticky" viewBox="0 0 50 40" aria-hidden="true">
+                <ellipse cx="26" cy="36" rx="20" ry="3" fill="rgba(40,30,0,0.3)" />
+                <polygon points="6,33 12,16 44,16 40,33" fill="#e78fb0" />
+                <polygon points="8,29 14,12 46,12 42,29" fill="#f5e27a" />
+                <path d="M18 18 H38 M17 22 H34" stroke="#8a7a2a" strokeWidth="1.2" fill="none" />
+              </svg>
+
+              <svg className="item pencil-case" viewBox="0 0 120 40" aria-hidden="true">
+                <ellipse cx="62" cy="35" rx="54" ry="4.5" fill="rgba(40,30,0,0.3)" />
+                <rect x="6" y="20" width="108" height="13" rx="6" fill="#b36a24" />
+                <path d="M12 20 L24 8 H118 L106 20 Z" fill="#e39a4e" />
+                <path d="M26 12 H100" stroke="#6b3d12" strokeWidth="1.5" strokeDasharray="2 2" fill="none" />
+                <rect x="98" y="9" width="6" height="5" rx="1" fill="#d8d3bd" />
+              </svg>
+
+              <svg className="item loose-pen" viewBox="0 0 80 14" aria-hidden="true">
+                <ellipse cx="42" cy="11" rx="34" ry="2.5" fill="rgba(40,30,0,0.25)" />
+                <g transform="rotate(-6 40 6)">
+                  <rect x="4" y="3" width="64" height="6" rx="3" fill="#2d6cdf" />
+                  <rect x="56" y="3" width="14" height="6" rx="3" fill="#cfcfc6" />
+                  <path d="M4 3 L0 6 L4 9 Z" fill="#222" />
+                </g>
               </svg>
             </div>
             <div className="tabletop" />
@@ -353,7 +416,7 @@ function App() {
                 <p className="author">- {selected.author}</p>
                 <div className="zoom-actions">
                   <button className="tool-btn" onClick={() => setSelected(null)}>
-                    Zoom out
+                    Close
                   </button>
                   <button
                     className="tool-btn danger"
@@ -380,6 +443,10 @@ function App() {
             height: flyer.height,
             "--dx": `${flyer.dx}px`,
             "--dy": `${flyer.dy}px`,
+            "--sx": flyer.sx,
+            "--sy": flyer.sy,
+            // the ball disappears into the trash, but stays visible when it lands in the jar
+            "--end-op": flyer.kind === "save" ? 1 : 0,
           }}
           onAnimationEnd={handleFlyerEnd}
         >
